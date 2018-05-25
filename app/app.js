@@ -16,11 +16,18 @@ import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 
+import ReactBreakpoints from 'react-breakpoints';
+
 // Import root app
 import App from 'containers/App';
 
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
+
+// Import mdbreact requirements
+import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
@@ -45,20 +52,27 @@ import { translationMessages } from './i18n';
 // Import CSS reset and Global Styles
 import './global-styles';
 
-import './firebase';
-
 // Create redux store with history
 const initialState = {};
 const history = createHistory();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
+const breakpoints = {
+  mobile: 576,
+  tablet: 768,
+  desktop: 992,
+  desktopLarge: 1200,
+};
+
 const render = (messages) => {
   ReactDOM.render(
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <App />
+          <ReactBreakpoints breakpoints={breakpoints}>
+            <App />
+          </ReactBreakpoints>
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,

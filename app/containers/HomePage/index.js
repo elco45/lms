@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { View } from 'mdbreact';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -16,10 +17,18 @@ import makeSelectHomePage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
+import testBackground from '../../images/testBackground.jpg';
+
 export class HomePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
+        <View style={{ background: `url(${testBackground})no-repeat center center`, backgroundSize: 'cover', height: '100vh' }}>
+        </View>
+        <p>asdasd </p>
+        <p>asdasd </p>
+        <p>asdasd </p>
+        <p>asdasd </p>
       </div>
     );
   }

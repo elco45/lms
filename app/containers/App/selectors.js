@@ -9,6 +9,11 @@ const makeSelectCurrentUser = () => createSelector(
   (globalState) => globalState.get('user')
 );
 
+const makeSelectSignUpError = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('signUpError')
+);
+
 const makeSelectLoggedIn = () => createSelector(
   selectGlobal,
   (globalState) => globalState.get('loggedIn')
@@ -21,6 +26,7 @@ const makeSelectLocation = () => createSelector(
 
 export {
   makeSelectCurrentUser,
-  makeSelectLoggedIn,
   makeSelectLocation,
+  makeSelectLoggedIn,
+  makeSelectSignUpError,
 };

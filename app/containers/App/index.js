@@ -4,14 +4,17 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { Switch, Route } from 'react-router-dom';
+import { withBreakpoints } from 'react-breakpoints';
 
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import {
   login,
+  loginWithProvider,
   logout,
+  signUp,
 } from './actions';
-import { makeSelectCurrentUser, makeSelectLoggedIn } from './selectors';
+import { makeSelectCurrentUser, makeSelectLoggedIn, makeSelectSignUpError } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -22,14 +25,21 @@ import NotFoundPage from '../NotFoundPage/Loadable';
 
 export class App extends React.PureComponent {
   render() {
-    const { user, loggedIn } = this.props;
+    const {
+      user, loggedIn, signIn, signInWithProvider, signOut, createUser, breakpoints, screenWidth, signUpError,
+    } = this.props;
     return (
       <div>
         <GlobalNav
           user={user}
           loggedIn={loggedIn}
-          signIn={this.props.signIn}
-          signOut={this.props.signOut}
+          signIn={signIn}
+          signInWithProvider={signInWithProvider}
+          signOut={signOut}
+          signUp={createUser}
+          signUpError={signUpError}
+          breakpoints={breakpoints}
+          screenWidth={screenWidth}
         />
         <Switch>
           <Route exact path="/" component={HomePage} />
@@ -42,19 +52,27 @@ export class App extends React.PureComponent {
 
 App.propTypes = {
   user: PropTypes.object,
+  signUpError: PropTypes.object,
   loggedIn: PropTypes.bool.isRequired,
   signIn: PropTypes.func.isRequired,
+  signInWithProvider: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
+  breakpoints: PropTypes.any.isRequired,
+  screenWidth: PropTypes.number,
 };
 
 const mapDispatchToProps = {
   signIn: login,
+  signInWithProvider: loginWithProvider,
   signOut: logout,
+  createUser: signUp,
 };
 
 const mapStateToProps = createStructuredSelector({
   user: makeSelectCurrentUser(),
   loggedIn: makeSelectLoggedIn(),
+  signUpError: makeSelectSignUpError(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
@@ -66,4 +84,5 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
+  withBreakpoints,
 )(App);

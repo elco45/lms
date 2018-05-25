@@ -1,15 +1,24 @@
 import {
   LOGIN_REQUEST,
+  LOGIN_PROVIDER_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
+  SIGNUP_REQUEST,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE,
   SYNC_USER,
 } from './constants';
 
 export const login = () => ({
   type: LOGIN_REQUEST,
+});
+
+export const loginWithProvider = (provider) => ({
+  type: LOGIN_PROVIDER_REQUEST,
+  provider,
 });
 
 export const loginSuccess = (credential) => ({
@@ -32,6 +41,20 @@ export const logoutSuccess = () => ({
 
 export const logoutFailure = (error) => ({
   type: LOGOUT_FAILURE,
+  error,
+});
+
+export const signUp = (credential) => ({
+  type: SIGNUP_REQUEST,
+  credential,
+});
+
+export const signUpSuccess = () => ({
+  type: SIGNUP_SUCCESS,
+});
+
+export const signUpFailure = (error) => ({
+  type: SIGNUP_FAILURE,
   error,
 });
 

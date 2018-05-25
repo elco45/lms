@@ -27,4 +27,50 @@ injectGlobal`
     font-family: Georgia, Times, 'Times New Roman', serif;
     line-height: 1.5em;
   }
+
+  .roundedModal > .modal-content {
+    border-radius: 15px !important;
+  }
+
+  .modal {
+    text-align: center;
+    padding: 0!important;
+  }
+
+  .modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+  }
+
+  .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .top-nav-collapse {
+    background-color: #fff;
+  }
+
+  .top-nav-collapse > .container > a,
+  .top-nav-collapse > .container > ul > li > a,
+  .top-nav-collapse > .container > div > ul > li > a {
+    color: #392349 !important;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .navbar {
+      color: #392349 !important;
+      background-color: #fff;
+    }
+    .navbar-dark .navbar-brand {
+      color: #392349 !important;
+    }
+    .nav-item > a {
+      color: #392349 !important;
+    }
+  }
 `;

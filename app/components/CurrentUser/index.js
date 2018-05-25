@@ -1,24 +1,52 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import Styled from 'styled-components';
+import { NavItem, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'mdbreact';
+import avatarProfileAlt from '../../images/icon-72x72.png';
 
-const CurrentUser = ({ user, signOut }) => (
-  <div className="CurrentUser">
-    <img
-      className="CurrentUser--photo"
-      src={user.photoURL}
-      alt={user.displayName}
-    />
-    <div className="CurrentUser--identification">
-      <h3 className="CurrentUser--displayName">{ user.displayName }</h3>
-      <p className="CurrentUser--email">{ user.email }</p>
-      <button
-        className="CurrentUser--signout"
-        onClick={signOut}
-      >
-        Sign Out
-      </button>
-    </div>
-  </div>
-);
+const AvatarImage = Styled.img`
+  height: 25px;
+  width: 25px;
+  margin-right: 5px;
+`;
+
+class CurrentUser extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropdownOpen: false,
+    };
+
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen,
+    });
+  }
+  render() {
+    const { user, signOut } = this.props;
+
+    return (
+      <NavItem>
+        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+          <DropdownToggle nav caret>
+            <AvatarImage
+              className="rounded-circle"
+              src={user.photoURL || avatarProfileAlt}
+              alt={user.displayName}
+            />
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>My Account</DropdownItem>
+            <DropdownItem onClick={signOut}>Log Out</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </NavItem>
+    );
+  }
+}
 
 CurrentUser.propTypes = {
   user: PropTypes.shape({
