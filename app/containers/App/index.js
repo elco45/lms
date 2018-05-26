@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { withBreakpoints } from 'react-breakpoints';
 
 import injectReducer from 'utils/injectReducer';
@@ -27,16 +27,6 @@ import UserVerifyPage from '../UserVerifyPage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 
 export class App extends React.PureComponent {
-  verifyUser(Comp) {
-    const { user } = this.props;
-    if (!user) {
-      return (<Redirect to="/user-unauthorized" />);
-    } else if (user && !user.emailVerified) {
-      return (<Redirect to="/email-verification" />);
-    }
-    return (<Comp />);
-  }
-
   render() {
     const {
       user, loggedIn, signIn, signInWithProvider, signOut, createUser, breakpoints, screenWidth, signUpError, signInError,
@@ -58,7 +48,7 @@ export class App extends React.PureComponent {
         {/* <div style={{ marginTop: location.pathname !== '/' ? 62 : null }}> */}
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/cursos" render={() => (this.verifyUser(CoursesPage))} />
+          <Route exact path="/cursos" component={CoursesPage} />
           <Route exact path="/email-verification" component={EmailVerifyPage} />
           <Route exact path="/user-unauthorized" component={UserVerifyPage} />
           <Route component={NotFoundPage} />
