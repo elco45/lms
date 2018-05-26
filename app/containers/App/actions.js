@@ -12,8 +12,9 @@ import {
   SYNC_USER,
 } from './constants';
 
-export const login = () => ({
+export const login = (credential) => ({
   type: LOGIN_REQUEST,
+  credential,
 });
 
 export const loginWithProvider = (provider) => ({

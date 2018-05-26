@@ -60,17 +60,4 @@ injectGlobal`
   .top-nav-collapse > .container > div > ul > li > a {
     color: #392349 !important;
   }
-
-  @media only screen and (max-width: 768px) {
-    .navbar {
-      color: #392349 !important;
-      background-color: #fff;
-    }
-    .navbar-dark .navbar-brand {
-      color: #392349 !important;
-    }
-    .nav-item > a {
-      color: #392349 !important;
-    }
-  }
 `;

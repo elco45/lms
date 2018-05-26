@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Navbar, NavbarBrand, NavbarNav, Collapse,
   NavItem, NavLink } from 'mdbreact';
+import { withRouter } from 'react-router-dom';
 import SignIn from '../SignIn';
 import CurrentUser from '../CurrentUser';
 
@@ -35,63 +36,78 @@ class GlobalNav extends React.Component {
     });
   }
 
-  renderUserNavItem() {
-    const { user, loggedIn, signIn, signInWithProvider, signOut, signUp, signUpError } = this.props;
+  checkActive(path) {
+    const { location } = this.props;
+    if (location.pathname === path) {
+      return true;
+    }
+    return false;
+  }
+
+  renderUserNavItem(navChange) {
+    const { user, loggedIn, signIn, signInWithProvider, signOut, signUp, signUpError, signInError } = this.props;
     return (
       <NavbarNav right key="uN">
         {
           loggedIn && user ? (
-            <CurrentUser user={user} signOut={signOut} />
+            <CurrentUser navChange={navChange} user={user} signOut={signOut} />
           ) : (
-            <SignIn signIn={signIn} signInWithProvider={signInWithProvider} signUp={signUp} signUpError={signUpError} />
+            <SignIn
+              navChange={navChange}
+              signIn={signIn}
+              signInWithProvider={signInWithProvider}
+              signUp={signUp}
+              signUpError={signUpError}
+              signInError={signInError}
+            />
           )
         }
       </NavbarNav>
     );
   }
 
-  renderMobileUserNavItem() {
+  renderMobileUserNavItem(navChange) {
     const { user, loggedIn, signIn, signInWithProvider, signOut } = this.props;
     return (
       loggedIn && user ? (
         <NavItem onClick={signOut}>
-          <NavLink to="#">Logout</NavLink>
+          <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="#">Logout</NavLink>
         </NavItem>
       ) : (
-        <SignIn signIn={signIn} signInWithProvider={signInWithProvider} />
+        <SignIn navChange={navChange} signIn={signIn} signInWithProvider={signInWithProvider} />
       )
     );
   }
 
-  renderCollapseNavItems() {
+  renderCollapseNavItems(navChange) {
     return (
       <Collapse isOpen={this.state.collapse} navbar key="cN">
         <NavbarNav left>
-          <NavItem>
-            <NavLink to="#">Cursos</NavLink>
+          <NavItem active={this.checkActive('/cursos')}>
+            <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="/cursos">Cursos</NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink to="#">Proyectos</NavLink>
+          <NavItem active={this.checkActive('/proyectos')}>
+            <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="#">Proyectos</NavLink>
           </NavItem>
         </NavbarNav>
       </Collapse>
     );
   }
 
-  renderMobileCollapseNavItems(isMobile) {
+  renderMobileCollapseNavItems(isMobile, navChange) {
     if (isMobile) {
       return (
         <Collapse style={{ marginTop: 16, borderTop: '1px solid gray' }} isOpen={this.state.collapse} navbar key="cN">
           <NavbarNav left>
             <div style={{ marginLeft: 16 }}>
               <NavItem>
-                <NavLink to="#">Cursos</NavLink>
+                <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="/cursos">Cursos</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="#">Proyectos</NavLink>
+                <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="#">Proyectos</NavLink>
               </NavItem>
               <hr style={{ color: 'gray', margin: 0 }} />
-              {this.renderMobileUserNavItem()}
+              {this.renderMobileUserNavItem(navChange)}
             </div>
           </NavbarNav>
         </Collapse>
@@ -100,7 +116,7 @@ class GlobalNav extends React.Component {
     return null;
   }
 
-  renderNavItems(isMobile) {
+  renderNavItems(isMobile, navChange) {
     if (isMobile) {
       return (
         <button onClick={this.onClick}>
@@ -109,29 +125,37 @@ class GlobalNav extends React.Component {
       );
     }
     return [
-      this.renderCollapseNavItems(),
-      this.renderUserNavItem(),
+      this.renderCollapseNavItems(navChange),
+      this.renderUserNavItem(navChange),
     ];
   }
 
   render() {
-    const { screenWidth, breakpoints } = this.props;
+    const { screenWidth, breakpoints, location } = this.props;
     const { brandHoverAnimation } = this.state;
     const isMobile = screenWidth <= breakpoints.mobile;
+    const navChange = location.pathname !== '/' || isMobile;
 
     return (
-      <Navbar color="transparent" fixed="top" dark expand="md" scrolling>
+      <Navbar
+        color={navChange ? 'white' : 'transparent'}
+        fixed="top"
+        dark
+        expand="md"
+        scrolling
+      >
         <div className="container">
           <NavbarBrand // eslint-disable-line
             href="/"
             onMouseOver={this.onHoverBrand}
             className={brandHoverAnimation ? 'animated rubberBand' : null}
+            style={{ color: navChange ? '#392349' : '#fff' }}
           >
             Academy
           </NavbarBrand>
-          {this.renderNavItems(isMobile)}
+          {this.renderNavItems(isMobile, navChange)}
         </div>
-        {this.renderMobileCollapseNavItems(isMobile)}
+        {this.renderMobileCollapseNavItems(isMobile, navChange)}
       </Navbar>
     );
   }
@@ -140,6 +164,7 @@ class GlobalNav extends React.Component {
 GlobalNav.propTypes = {
   user: PropTypes.object,
   signUpError: PropTypes.object,
+  signInError: PropTypes.object,
   loggedIn: PropTypes.bool.isRequired,
   signIn: PropTypes.func.isRequired,
   signInWithProvider: PropTypes.func.isRequired,
@@ -147,6 +172,7 @@ GlobalNav.propTypes = {
   signUp: PropTypes.func.isRequired,
   breakpoints: PropTypes.any.isRequired,
   screenWidth: PropTypes.number,
+  location: PropTypes.object,
 };
 
-export default GlobalNav;
+export default withRouter(GlobalNav);

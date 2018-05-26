@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { View } from 'mdbreact';
+import { View, Mask } from 'mdbreact';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -24,6 +24,10 @@ export class HomePage extends React.Component { // eslint-disable-line react/pre
     return (
       <div>
         <View style={{ background: `url(${testBackground})no-repeat center center`, backgroundSize: 'cover', height: '100vh' }}>
+          <Mask overlay="indigo-slight" style={{ flexDirection: 'column' }} className="flex-center  text-white text-center">
+            <h2>Bienvenido a Meowcademy</h2>
+            <h5>Meow!</h5>
+          </Mask>
         </View>
         <p>asdasd </p>
         <p>asdasd </p>

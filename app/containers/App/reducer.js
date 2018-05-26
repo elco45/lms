@@ -18,6 +18,7 @@ const initialState = fromJS({
   loggedIn: false,
   user: null,
   signUpError: null,
+  signInError: null,
 });
 
 function appReducer(state = initialState, action) {
@@ -27,6 +28,9 @@ function appReducer(state = initialState, action) {
         .set('loading', true)
         .set('signUpError', null);
     case LOGIN_REQUEST:
+      return state
+        .set('loading', true)
+        .set('signInError', null);
     case LOGIN_PROVIDER_REQUEST:
     case LOGOUT_REQUEST:
       return state
@@ -42,6 +46,9 @@ function appReducer(state = initialState, action) {
         .set('loading', false)
         .set('signUpError', action.error);
     case LOGIN_FAILURE:
+      return state
+        .set('loading', false)
+        .set('signInError', action.error);
     case LOGOUT_FAILURE:
       return state
         .set('loading', false);

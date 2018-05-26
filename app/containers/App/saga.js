@@ -28,9 +28,10 @@ function* signUpSaga(action) {
         email,
         username,
       });
-      yield call(reduxSagaFirebase.database.create, `userXusername/${username.toLowerCase()}`, {
+      yield call(reduxSagaFirebase.database.update, `userXusername/${username.toLowerCase()}`,
         uid,
-      });
+      );
+      yield call(reduxSagaFirebase.auth.sendEmailVerification, {});
 
       yield put(signUpSuccess(response));
     } else {
@@ -45,11 +46,25 @@ function* signUpSaga(action) {
   }
 }
 
-function* loginSaga() {
+function* loginSaga(action) {
   try {
-    const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-    const data = yield call(reduxSagaFirebase.auth.signInWithPopup, googleAuthProvider);
-    yield put(loginSuccess(data));
+    const { username, password } = action.credential;
+
+    const userId = yield call(reduxSagaFirebase.database.read, `userXusername/${username.toLowerCase()}`);
+
+    if (userId) {
+      const user = yield call(reduxSagaFirebase.database.read, `users/${userId}`);
+      const { email } = user;
+
+      yield call(reduxSagaFirebase.auth.signInWithEmailAndPassword, email, password);
+      yield put(loginSuccess());
+    } else {
+      const error = {
+        code: 'auth/username-does-not-exist',
+        message: 'This username does not exist.',
+      };
+      yield put(loginFailure(error));
+    }
   } catch (error) {
     yield put(loginFailure(error));
   }

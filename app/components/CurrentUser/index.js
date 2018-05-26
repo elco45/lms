@@ -26,12 +26,12 @@ class CurrentUser extends React.Component {
     });
   }
   render() {
-    const { user, signOut } = this.props;
+    const { user, signOut, navChange } = this.props;
 
     return (
       <NavItem>
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-          <DropdownToggle nav caret>
+          <DropdownToggle style={{ color: navChange ? '#392349' : '#fff' }} nav caret>
             <AvatarImage
               className="rounded-circle"
               src={user.photoURL || avatarProfileAlt}
@@ -39,8 +39,8 @@ class CurrentUser extends React.Component {
             />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem>My Account</DropdownItem>
-            <DropdownItem onClick={signOut}>Log Out</DropdownItem>
+            <DropdownItem>Mi cuenta</DropdownItem>
+            <DropdownItem onClick={signOut}>Cerrar Sesión</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </NavItem>
@@ -49,6 +49,7 @@ class CurrentUser extends React.Component {
 }
 
 CurrentUser.propTypes = {
+  navChange: PropTypes.bool,
   user: PropTypes.shape({
     displayName: PropTypes.string,
     email: PropTypes.string.isRequired,

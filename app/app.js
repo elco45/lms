@@ -69,11 +69,11 @@ const render = (messages) => {
   ReactDOM.render(
     <Provider store={store}>
       <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <ReactBreakpoints breakpoints={breakpoints}>
+        <ReactBreakpoints breakpoints={breakpoints}>
+          <ConnectedRouter history={history}>
             <App />
-          </ReactBreakpoints>
-        </ConnectedRouter>
+          </ConnectedRouter>
+        </ReactBreakpoints>
       </LanguageProvider>
     </Provider>,
     MOUNT_NODE

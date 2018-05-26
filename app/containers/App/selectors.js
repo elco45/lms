@@ -14,6 +14,11 @@ const makeSelectSignUpError = () => createSelector(
   (globalState) => globalState.get('signUpError')
 );
 
+const makeSelectSignInError = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('signInError')
+);
+
 const makeSelectLoggedIn = () => createSelector(
   selectGlobal,
   (globalState) => globalState.get('loggedIn')
@@ -29,4 +34,5 @@ export {
   makeSelectLocation,
   makeSelectLoggedIn,
   makeSelectSignUpError,
+  makeSelectSignInError,
 };
