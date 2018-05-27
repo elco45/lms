@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Row, Col, Fa, Button, Container } from 'mdbreact';
+import { Row, Col, Fa, Container } from 'mdbreact';
 import PageContainer from '../../components/PageContainer';
+import BootstrapLinkButton from '../../components/BootstrapLinkButton';
 
 export class CoursesPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -17,7 +18,9 @@ export class CoursesPage extends React.Component { // eslint-disable-line react/
             <Row>
               <Col md="12" className="mb-4 white-text text-center">
                 <h3 className="display-3 font-weight-bold mb-0 pt-md-5 deep-purple-text">Cursos!</h3>
-                <Button outline color="primary" href="/"><Fa icon="home mr-1" /> Regresar</Button>
+                <BootstrapLinkButton outline color="primary" href="/">
+                  <Fa icon="home mr-1" /> Regresar
+                </BootstrapLinkButton>
               </Col>
             </Row>
           </Container>

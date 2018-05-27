@@ -215,7 +215,7 @@ class SignUpModal extends React.Component {
   }
 
   render() {
-    const { toggle, toggleSignUp, modalSignUp } = this.props;
+    const { toggle, toggleSignUp, modalSignUp, loading } = this.props;
 
     return (
       <Modal size="lg" isOpen={modalSignUp} toggle={toggleSignUp} className="roundedModal">
@@ -244,7 +244,15 @@ class SignUpModal extends React.Component {
                   noHtml5Validate
                   liveValidate={this.state.live}
                 >
-                  <Button type="submit" color="primary">Registrarse</Button>
+                  <Button type="submit" color="primary">
+                    {
+                      loading ? (
+                        <i key="spin" className="fa fa-spinner fa-spin deep-purple-text"></i>
+                      ) : (
+                        'Registrarse'
+                      )
+                    }
+                  </Button>
                 </Form>
                 {/* <SignInProvider signInWithProvider={signInWithProvider} /> */}
                 <div className="col-12">
@@ -272,6 +280,7 @@ SignUpModal.propTypes = {
   signUp: PropTypes.func,
   signUpError: PropTypes.object,
   modalSignUp: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export default SignUpModal;

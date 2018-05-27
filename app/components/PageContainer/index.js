@@ -6,16 +6,20 @@ import { createStructuredSelector } from 'reselect';
 
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
-import { makeSelectCurrentUser, makeSelectLoggedIn } from '../../containers/App/selectors';
+import { makeSelectCurrentUser, makeSelectLoggedIn, makeSelectSync } from '../../containers/App/selectors';
 import reducer from '../../containers/App/reducer';
 import saga from '../../containers/App/saga';
 import EmailVerifyPage from '../../containers/EmailVerifyPage/Loadable';
 import UserVerifyPage from '../../containers/UserVerifyPage/Loadable';
+import LoadingSpinner from '../LoadingSpinner';
 
 export class PageContainer extends React.PureComponent {
   verifyUser() {
-    const { user, loggedIn, children, verifyUser } = this.props;
+    const { user, loggedIn, children, verifyUser, syncing } = this.props;
     if (verifyUser) {
+      if (syncing) {
+        return <LoadingSpinner />;
+      }
       if (!user && !loggedIn) {
         return (<UserVerifyPage />);
       } else if (user && !user.emailVerified) {
@@ -45,6 +49,7 @@ PageContainer.propTypes = {
   verifyUser: PropTypes.bool,
   user: PropTypes.object,
   loggedIn: PropTypes.bool.isRequired,
+  syncing: PropTypes.bool,
 };
 
 PageContainer.defaultProps = {
@@ -57,6 +62,7 @@ const mapDispatchToProps = {};
 const mapStateToProps = createStructuredSelector({
   user: makeSelectCurrentUser(),
   loggedIn: makeSelectLoggedIn(),
+  syncing: makeSelectSync(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

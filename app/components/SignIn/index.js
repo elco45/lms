@@ -37,7 +37,7 @@ class SignIn extends React.Component {
   }
 
   renderSignUpModal() {
-    const { signInWithProvider, signUp, signUpError } = this.props;
+    const { signInWithProvider, signUp, signUpError, loading } = this.props;
     return (
       <SignUpModal
         key="msu"
@@ -47,12 +47,13 @@ class SignIn extends React.Component {
         signUp={signUp}
         signUpError={signUpError}
         modalSignUp={this.state.modalSignUp}
+        loading={loading}
       />
     );
   }
 
   renderSignInModal() {
-    const { signInWithProvider, signIn, signInError } = this.props;
+    const { signInWithProvider, signIn, signInError, loading } = this.props;
 
     return (
       <SignInModal
@@ -63,6 +64,7 @@ class SignIn extends React.Component {
         signIn={signIn}
         signInError={signInError}
         modalSignIn={this.state.modalSignIn}
+        loading={loading}
       />
     );
   }
@@ -97,10 +99,20 @@ class SignIn extends React.Component {
     );
   }
 
+  renderAuthItems() {
+    const { syncing } = this.props;
+    if (!syncing) {
+      return [
+        this.renderSignIn(),
+        this.renderSignUp(),
+      ];
+    }
+    return (<i key="spin" className="fa fa-spinner fa-spin deep-purple-text"></i>);
+  }
+
   render() {
     return [
-      this.renderSignIn(),
-      this.renderSignUp(),
+      this.renderAuthItems(),
       this.renderSignUpModal(),
       this.renderSignInModal(),
     ];
@@ -114,6 +126,8 @@ SignIn.propTypes = {
   signUp: PropTypes.func,
   signUpError: PropTypes.object,
   signInError: PropTypes.object,
+  syncing: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export default SignIn;

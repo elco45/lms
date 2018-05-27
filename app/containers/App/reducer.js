@@ -11,12 +11,14 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
   SYNC_USER,
+  SYNC,
 } from './constants';
 
 const initialState = fromJS({
   loading: false,
   loggedIn: false,
   user: null,
+  syncing: false,
   signUpError: null,
   signInError: null,
 });
@@ -52,9 +54,13 @@ function appReducer(state = initialState, action) {
     case LOGOUT_FAILURE:
       return state
         .set('loading', false);
+    case SYNC:
+      return state
+        .set('syncing', true);
     case SYNC_USER:
       return state
         .set('loggedIn', action.user != null)
+        .set('syncing', false)
         .set('user', action.user);
     default:
       return state;

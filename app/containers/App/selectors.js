@@ -24,6 +24,16 @@ const makeSelectLoggedIn = () => createSelector(
   (globalState) => globalState.get('loggedIn')
 );
 
+const makeSelectSync = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('syncing')
+);
+
+const makeSelectLoading = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('loading')
+);
+
 const makeSelectLocation = () => createSelector(
   selectRoute,
   (routeState) => routeState.get('location').toJS()
@@ -35,4 +45,6 @@ export {
   makeSelectLoggedIn,
   makeSelectSignUpError,
   makeSelectSignInError,
+  makeSelectSync,
+  makeSelectLoading,
 };

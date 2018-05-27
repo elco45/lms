@@ -11,3 +11,4 @@ export const SIGNUP_REQUEST = 'App/SIGNUP_REQUEST';
 export const SIGNUP_SUCCESS = 'App/SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'App/SIGNUP_FAILURE';
 export const SYNC_USER = 'App/SYNC_USER';
+export const SYNC = 'App/SYNC';

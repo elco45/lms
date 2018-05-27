@@ -45,7 +45,7 @@ class GlobalNav extends React.Component {
   }
 
   renderUserNavItem(navChange) {
-    const { user, loggedIn, signIn, signInWithProvider, signOut, signUp, signUpError, signInError } = this.props;
+    const { user, loggedIn, signIn, signInWithProvider, signOut, signUp, signUpError, signInError, syncing, loading } = this.props;
     return (
       <NavbarNav right key="uN">
         {
@@ -59,6 +59,8 @@ class GlobalNav extends React.Component {
               signUp={signUp}
               signUpError={signUpError}
               signInError={signInError}
+              syncing={syncing}
+              loading={loading}
             />
           )
         }
@@ -131,7 +133,7 @@ class GlobalNav extends React.Component {
   }
 
   render() {
-    const { screenWidth, breakpoints, location } = this.props;
+    const { screenWidth, breakpoints, location, history } = this.props;
     const { brandHoverAnimation } = this.state;
     const isMobile = screenWidth <= breakpoints.mobile;
     const navChange = location.pathname !== '/' || isMobile;
@@ -146,7 +148,7 @@ class GlobalNav extends React.Component {
       >
         <div className="container">
           <NavbarBrand // eslint-disable-line
-            href="/"
+            onClick={() => history.push('/')}
             onMouseOver={this.onHoverBrand}
             className={brandHoverAnimation ? 'animated rubberBand' : null}
             style={{ color: navChange ? '#392349' : '#fff' }}
@@ -172,7 +174,10 @@ GlobalNav.propTypes = {
   signUp: PropTypes.func.isRequired,
   breakpoints: PropTypes.any.isRequired,
   screenWidth: PropTypes.number,
+  syncing: PropTypes.bool,
+  loading: PropTypes.bool,
   location: PropTypes.object,
+  history: PropTypes.object,
 };
 
 export default withRouter(GlobalNav);

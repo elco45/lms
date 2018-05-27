@@ -10,6 +10,7 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
   SYNC_USER,
+  SYNC,
 } from './constants';
 
 export const login = (credential) => ({
@@ -59,6 +60,9 @@ export const signUpFailure = (error) => ({
   error,
 });
 
+export const sync = () => ({
+  type: SYNC,
+});
 export const syncUser = (user) => ({
   type: SYNC_USER,
   user,

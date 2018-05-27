@@ -10,6 +10,7 @@ import {
   signUpSuccess,
   signUpFailure,
   syncUser,
+  sync,
 } from './actions';
 
 import { reduxSagaFirebase } from '../../firebase';
@@ -99,6 +100,7 @@ function* syncUserSaga() {
 
   while (true) {
     const { user } = yield take(channel);
+    yield put(sync());
     if (user) {
       const { displayName, email, photoURL, uid } = user;
       yield call(reduxSagaFirebase.database.patch, `users/${uid}`, {

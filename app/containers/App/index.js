@@ -14,7 +14,13 @@ import {
   logout,
   signUp,
 } from './actions';
-import { makeSelectCurrentUser, makeSelectLoggedIn, makeSelectSignUpError, makeSelectSignInError } from './selectors';
+import {
+  makeSelectCurrentUser,
+  makeSelectLoggedIn,
+  makeSelectSignUpError,
+  makeSelectSignInError,
+  makeSelectSync,
+  makeSelectLoading } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -22,14 +28,13 @@ import GlobalNav from '../../components/GlobalNav';
 
 import HomePage from '../HomePage/Loadable';
 import CoursesPage from '../CoursesPage';
-import EmailVerifyPage from '../EmailVerifyPage/Loadable';
-import UserVerifyPage from '../UserVerifyPage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 
 export class App extends React.PureComponent {
   render() {
     const {
-      user, loggedIn, signIn, signInWithProvider, signOut, createUser, breakpoints, screenWidth, signUpError, signInError,
+      user, loggedIn, signIn, signInWithProvider, signOut, createUser, breakpoints,
+      screenWidth, signUpError, signInError, syncing, loading,
     } = this.props;
     return (
       <div>
@@ -44,13 +49,13 @@ export class App extends React.PureComponent {
           signInError={signInError}
           breakpoints={breakpoints}
           screenWidth={screenWidth}
+          syncing={syncing}
+          loading={loading}
         />
         {/* <div style={{ marginTop: location.pathname !== '/' ? 62 : null }}> */}
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/cursos" component={CoursesPage} />
-          <Route exact path="/email-verification" component={EmailVerifyPage} />
-          <Route exact path="/user-unauthorized" component={UserVerifyPage} />
           <Route component={NotFoundPage} />
         </Switch>
         {/* </div> */}
@@ -70,6 +75,8 @@ App.propTypes = {
   createUser: PropTypes.func.isRequired,
   breakpoints: PropTypes.any.isRequired,
   screenWidth: PropTypes.number,
+  syncing: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 const mapDispatchToProps = {
@@ -84,6 +91,8 @@ const mapStateToProps = createStructuredSelector({
   loggedIn: makeSelectLoggedIn(),
   signUpError: makeSelectSignUpError(),
   signInError: makeSelectSignInError(),
+  syncing: makeSelectSync(),
+  loading: makeSelectLoading(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
