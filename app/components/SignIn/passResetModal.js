@@ -50,6 +50,7 @@ class SignInModal extends React.Component {
 
     this.submitPassReset = this.submitPassReset.bind(this);
     this.validateSignIn = this.validateSignIn.bind(this);
+    this.toggleLive = this.toggleLive.bind(this);
   }
 
   validateSignIn(formData, errors) {
@@ -80,17 +81,25 @@ class SignInModal extends React.Component {
     this.props.passReset(data.formData);
   }
 
+  toggleLive() {
+    this.setState({
+      live: !this.state.live,
+      formData: {},
+    });
+    this.props.togglePassReset();
+  }
+
   render() {
-    const { togglePassReset, modalPassReset, loadingPassReset } = this.props;
+    const { modalPassReset, loadingPassReset } = this.props;
 
     return (
-      <Modal isOpen={modalPassReset} toggle={togglePassReset} className="roundedModal">
+      <Modal isOpen={modalPassReset} toggle={this.toggleLive} className="roundedModal">
         <div className="container">
           <div className="row">
             <ModalRightContainer className="col-12 text-center">
               <div className="row">
                 <div className="col-12 text-right">
-                  <button style={{ cursor: 'pointer' }} onClick={togglePassReset}>X</button>
+                  <button style={{ cursor: 'pointer' }} onClick={this.toggleLive}>X</button>
                 </div>
                 <ModalRightTitle className="col-12">Contraseña Olvidado</ModalRightTitle>
                 <Form
@@ -115,7 +124,7 @@ class SignInModal extends React.Component {
                       )
                     }
                   </Button>
-                  <Button onClick={togglePassReset} color="danger">
+                  <Button onClick={this.toggleLive} color="danger">
                     Cerrar
                   </Button>
                 </Form>
