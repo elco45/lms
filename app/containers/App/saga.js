@@ -1,16 +1,14 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { call, fork, put, take, takeEvery } from 'redux-saga/effects';
-import { SIGNUP_REQUEST, LOGIN_REQUEST, LOGIN_PROVIDER_REQUEST, LOGOUT_REQUEST } from 'containers/App/constants';
+import { SIGNUP_REQUEST, LOGIN_REQUEST, LOGIN_PROVIDER_REQUEST,
+  LOGOUT_REQUEST, PASS_RESET_REQUEST } from 'containers/App/constants';
 import {
-  loginSuccess,
-  loginFailure,
-  logoutSuccess,
-  logoutFailure,
-  signUpSuccess,
-  signUpFailure,
-  syncUser,
-  sync,
+  loginSuccess, loginFailure,
+  logoutSuccess, logoutFailure,
+  signUpSuccess, signUpFailure,
+  passResetSuccess, passResetFailure,
+  syncUser, sync,
 } from './actions';
 
 import { reduxSagaFirebase } from '../../firebase';
@@ -95,6 +93,30 @@ function* logoutSaga() {
   }
 }
 
+function* passResetSaga(action) {
+  try {
+    const { username } = action.credential;
+
+    const userId = yield call(reduxSagaFirebase.database.read, `userXusername/${username.toLowerCase()}`);
+
+    if (userId) {
+      const user = yield call(reduxSagaFirebase.database.read, `users/${userId}`);
+      const { email } = user;
+
+      yield call(reduxSagaFirebase.auth.sendPasswordResetEmail, email);
+      yield put(passResetSuccess());
+    } else {
+      const error = {
+        code: 'auth/username-does-not-exist',
+        message: 'This username does not exist.',
+      };
+      yield put(passResetFailure(error));
+    }
+  } catch (error) {
+    yield put(passResetFailure(error));
+  }
+}
+
 function* syncUserSaga() {
   const channel = yield call(reduxSagaFirebase.auth.channel);
 
@@ -122,5 +144,6 @@ export default function* loginRootSaga() {
     takeEvery(LOGIN_REQUEST, loginSaga),
     takeEvery(LOGIN_PROVIDER_REQUEST, loginWithProviderSaga),
     takeEvery(LOGOUT_REQUEST, logoutSaga),
+    takeEvery(PASS_RESET_REQUEST, passResetSaga),
   ];
 }

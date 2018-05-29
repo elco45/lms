@@ -9,10 +9,9 @@ export class EmailVerifyPage extends React.Component { // eslint-disable-line re
         <Container>
           <Row>
             <Col md="12" className="mb-4 white-text text-center">
-              <h3 className="display-3 font-weight-bold mb-0 pt-md-5 deep-purple-text">Whoops!</h3>
-              <hr className="hr-dark my-4 w-75" />
+              <h3 className="display-3 font-weight-bold mb-0 pt-md-5 deep-purple-text">Verifique su correo</h3>
               <h4 className="subtext-header mt-2 mb-4 deep-purple-text">
-                Porfavor verifique su correo para poder proseguir a esta página.
+                para poder proseguir a esta página.
               </h4>
               <BootstrapLinkButton outline color="primary" href="/">
                 <Fa icon="home mr-1" />Regresar

@@ -19,6 +19,11 @@ const makeSelectSignInError = () => createSelector(
   (globalState) => globalState.get('signInError')
 );
 
+const makeSelectPassResetError = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('passResetError')
+);
+
 const makeSelectLoggedIn = () => createSelector(
   selectGlobal,
   (globalState) => globalState.get('loggedIn')
@@ -34,6 +39,11 @@ const makeSelectLoading = () => createSelector(
   (globalState) => globalState.get('loading')
 );
 
+const makeSelectLoadingPassReset = () => createSelector(
+  selectGlobal,
+  (globalState) => globalState.get('loadingPassReset')
+);
+
 const makeSelectLocation = () => createSelector(
   selectRoute,
   (routeState) => routeState.get('location').toJS()
@@ -45,6 +55,8 @@ export {
   makeSelectLoggedIn,
   makeSelectSignUpError,
   makeSelectSignInError,
+  makeSelectPassResetError,
   makeSelectSync,
   makeSelectLoading,
+  makeSelectLoadingPassReset,
 };

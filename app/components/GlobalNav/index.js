@@ -45,7 +45,8 @@ class GlobalNav extends React.Component {
   }
 
   renderUserNavItem(navChange) {
-    const { user, loggedIn, signIn, signInWithProvider, signOut, signUp, signUpError, signInError, syncing, loading } = this.props;
+    const { user, loggedIn, signIn, signInWithProvider, signOut, signUp, signUpError, signInError, passResetError,
+      syncing, loading, loadingPassReset, sendPassReset } = this.props;
     return (
       <NavbarNav right key="uN">
         {
@@ -57,10 +58,13 @@ class GlobalNav extends React.Component {
               signIn={signIn}
               signInWithProvider={signInWithProvider}
               signUp={signUp}
+              sendPassReset={sendPassReset}
               signUpError={signUpError}
               signInError={signInError}
+              passResetError={passResetError}
               syncing={syncing}
               loading={loading}
+              loadingPassReset={loadingPassReset}
             />
           )
         }
@@ -89,7 +93,7 @@ class GlobalNav extends React.Component {
             <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="/cursos">Cursos</NavLink>
           </NavItem>
           <NavItem active={this.checkActive('/proyectos')}>
-            <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="#">Proyectos</NavLink>
+            <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="/proyectos">Proyectos</NavLink>
           </NavItem>
         </NavbarNav>
       </Collapse>
@@ -106,7 +110,7 @@ class GlobalNav extends React.Component {
                 <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="/cursos">Cursos</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="#">Proyectos</NavLink>
+                <NavLink style={{ color: navChange ? '#392349' : '#fff' }} to="/proyectos">Proyectos</NavLink>
               </NavItem>
               <hr style={{ color: 'gray', margin: 0 }} />
               {this.renderMobileUserNavItem(navChange)}
@@ -167,15 +171,18 @@ GlobalNav.propTypes = {
   user: PropTypes.object,
   signUpError: PropTypes.object,
   signInError: PropTypes.object,
+  passResetError: PropTypes.object,
   loggedIn: PropTypes.bool.isRequired,
   signIn: PropTypes.func.isRequired,
   signInWithProvider: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
   signUp: PropTypes.func.isRequired,
+  sendPassReset: PropTypes.func.isRequired,
   breakpoints: PropTypes.any.isRequired,
   screenWidth: PropTypes.number,
   syncing: PropTypes.bool,
   loading: PropTypes.bool,
+  loadingPassReset: PropTypes.bool,
   location: PropTypes.object,
   history: PropTypes.object,
 };

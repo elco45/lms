@@ -247,7 +247,7 @@ class SignUpModal extends React.Component {
                   <Button type="submit" color="primary">
                     {
                       loading ? (
-                        <i key="spin" className="fa fa-spinner fa-spin deep-purple-text"></i>
+                        <i key="spin" className="fa fa-spinner fa-spin"></i>
                       ) : (
                         'Registrarse'
                       )

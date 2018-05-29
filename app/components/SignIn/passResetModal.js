@@ -14,19 +14,9 @@ const ModalRightTitle = Styled.p`
   color: #1F3078;
 `;
 
-const ModalTextIsMember = Styled.span`
-  font-size: 11px;
-  color: gray;
-`;
-
-const ModalTextOpenSI = Styled.a`
-  font-size: 10px;
-  color: #69ABB7 !important;
-`;
-
-const signInSchema = {
+const passResetSchema = {
   type: 'object',
-  required: ['username', 'password'],
+  required: ['username'],
   properties: {
     username: {
       type: 'string',
@@ -36,14 +26,6 @@ const signInSchema = {
         pattern: 'Usuario solo se acepta valores alfanuméricos',
         required: 'Usuario no puede estar vacío',
         minLength: 'Usuario debe tener por lo menos 3 caracteres!',
-      },
-    },
-    password: {
-      type: 'string',
-      minLength: 6,
-      messages: {
-        required: 'Contraseña no puede estar vacío',
-        minLength: 'Contraseña debe tener por lo menos 6 caracteres!',
       },
     },
   },
@@ -56,13 +38,6 @@ const uiSignInSchema = {
     },
     'ui:placeholder': 'Nombre de usuario',
   },
-  password: {
-    'ui:widget': 'password',
-    'ui:options': {
-      label: false,
-    },
-    'ui:placeholder': 'Contraseña',
-  },
 };
 
 class SignInModal extends React.Component {
@@ -73,18 +48,15 @@ class SignInModal extends React.Component {
       live: false,
     };
 
-    this.submitSignIn = this.submitSignIn.bind(this);
+    this.submitPassReset = this.submitPassReset.bind(this);
     this.validateSignIn = this.validateSignIn.bind(this);
   }
 
   validateSignIn(formData, errors) {
-    const { signInError } = this.props;
+    const { passResetError } = this.props;
     const { live } = this.state;
-    if (live && signInError && signInError.code === 'auth/username-does-not-exist') {
-      errors.password.addError('Usuario o contraseña inválido.');
-    }
-    if (live && signInError && signInError.code === 'auth/wrong-password') {
-      errors.password.addError('Usuario o contraseña inválido');
+    if (live && passResetError && passResetError.code === 'auth/username-does-not-exist') {
+      errors.username.addError('Este usuario no existe');
     }
     return errors;
   }
@@ -92,7 +64,7 @@ class SignInModal extends React.Component {
   transformErrors(errors) {
     return errors.map((error) => {
       const errorProperty = error.property.replace('.', '');
-      const schemaProperty = signInSchema.properties;
+      const schemaProperty = passResetSchema.properties;
       if (schemaProperty[errorProperty] && schemaProperty[errorProperty].messages[error.name]) {
         return {
           ...error,
@@ -103,30 +75,30 @@ class SignInModal extends React.Component {
     });
   }
 
-  submitSignIn(data) {
+  submitPassReset(data) {
     this.setState({ live: true });
-    this.props.signIn(data.formData);
+    this.props.passReset(data.formData);
   }
 
   render() {
-    const { togglePassReset, toggle, toggleSignIn, modalSignIn, loading } = this.props;
+    const { togglePassReset, modalPassReset, loadingPassReset } = this.props;
 
     return (
-      <Modal isOpen={modalSignIn} toggle={toggleSignIn} className="roundedModal">
+      <Modal isOpen={modalPassReset} toggle={togglePassReset} className="roundedModal">
         <div className="container">
           <div className="row">
             <ModalRightContainer className="col-12 text-center">
               <div className="row">
                 <div className="col-12 text-right">
-                  <button style={{ cursor: 'pointer' }} onClick={toggleSignIn}>X</button>
+                  <button style={{ cursor: 'pointer' }} onClick={togglePassReset}>X</button>
                 </div>
-                <ModalRightTitle className="col-12">Iniciar Sesión</ModalRightTitle>
+                <ModalRightTitle className="col-12">Contraseña Olvidado</ModalRightTitle>
                 <Form
                   className="col-12  mt-2 mb-1"
                   formData={this.state.formData}
                   onChange={({ formData }) => this.setState({ formData, live: false })}
-                  onSubmit={this.submitSignIn}
-                  schema={signInSchema}
+                  onSubmit={this.submitPassReset}
+                  schema={passResetSchema}
                   validate={this.validateSignIn}
                   uiSchema={uiSignInSchema}
                   transformErrors={this.transformErrors}
@@ -136,23 +108,17 @@ class SignInModal extends React.Component {
                 >
                   <Button type="submit" color="primary">
                     {
-                      loading ? (
+                      loadingPassReset ? (
                         <i key="spin" className="fa fa-spinner fa-spin"></i>
                       ) : (
-                        'Entrar'
+                        'Enviar correo'
                       )
                     }
                   </Button>
+                  <Button onClick={togglePassReset} color="danger">
+                    Cerrar
+                  </Button>
                 </Form>
-                <div className="col-12">
-                  <div className="float-left">
-                    <ModalTextOpenSI onClick={togglePassReset}> Se me olvidó la contraseña...</ModalTextOpenSI>
-                  </div>
-                  <div className="float-right">
-                    <ModalTextIsMember> No eres miembro? </ModalTextIsMember>
-                    <ModalTextOpenSI onClick={toggle}> Crear cuenta </ModalTextOpenSI>
-                  </div>
-                </div>
               </div>
             </ModalRightContainer>
           </div>
@@ -163,13 +129,11 @@ class SignInModal extends React.Component {
 }
 
 SignInModal.propTypes = {
-  toggle: PropTypes.func,
   togglePassReset: PropTypes.func,
-  toggleSignIn: PropTypes.func,
-  signIn: PropTypes.func,
-  signInError: PropTypes.object,
-  modalSignIn: PropTypes.bool,
-  loading: PropTypes.bool,
+  passReset: PropTypes.func,
+  passResetError: PropTypes.object,
+  modalPassReset: PropTypes.bool,
+  loadingPassReset: PropTypes.bool,
 };
 
 export default SignInModal;

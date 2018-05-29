@@ -1,16 +1,9 @@
 import {
-  LOGIN_REQUEST,
-  LOGIN_PROVIDER_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE,
-  LOGOUT_REQUEST,
-  LOGOUT_SUCCESS,
-  LOGOUT_FAILURE,
-  SIGNUP_REQUEST,
-  SIGNUP_SUCCESS,
-  SIGNUP_FAILURE,
-  SYNC_USER,
-  SYNC,
+  LOGIN_REQUEST, LOGIN_PROVIDER_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,
+  LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE,
+  SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE,
+  PASS_RESET_REQUEST, PASS_RESET_SUCCESS, PASS_RESET_FAILURE,
+  SYNC_USER, SYNC,
 } from './constants';
 
 export const login = (credential) => ({
@@ -60,9 +53,24 @@ export const signUpFailure = (error) => ({
   error,
 });
 
+export const passReset = (credential) => ({
+  type: PASS_RESET_REQUEST,
+  credential,
+});
+
+export const passResetSuccess = () => ({
+  type: PASS_RESET_SUCCESS,
+});
+
+export const passResetFailure = (error) => ({
+  type: PASS_RESET_FAILURE,
+  error,
+});
+
 export const sync = () => ({
   type: SYNC,
 });
+
 export const syncUser = (user) => ({
   type: SYNC_USER,
   user,

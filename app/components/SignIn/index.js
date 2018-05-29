@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { NavItem, NavLink } from 'mdbreact';
 import SignUpModal from './signupModal';
 import SignInModal from './signinModal';
+import PassResetModal from './passResetModal';
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -10,10 +11,13 @@ class SignIn extends React.Component {
     this.state = {
       modalSignUp: false,
       modalSignIn: false,
+      modalPassReset: false,
     };
 
     this.toggleSignUp = this.toggleSignUp.bind(this);
     this.toggleSignIn = this.toggleSignIn.bind(this);
+    this.togglePassReset = this.togglePassReset.bind(this);
+    this.togglePass = this.togglePass.bind(this);
     this.toggle = this.toggle.bind(this);
   }
 
@@ -26,6 +30,19 @@ class SignIn extends React.Component {
   toggleSignIn() {
     this.setState({
       modalSignIn: !this.state.modalSignIn,
+    });
+  }
+
+  togglePassReset() {
+    this.setState({
+      modalSignIn: !this.state.modalSignIn,
+      modalPassReset: !this.state.modalPassReset,
+    });
+  }
+
+  togglePass() {
+    this.setState({
+      modalPassReset: !this.state.modalPassReset,
     });
   }
 
@@ -59,12 +76,28 @@ class SignIn extends React.Component {
       <SignInModal
         key="msi"
         toggle={this.toggle}
+        togglePassReset={this.togglePassReset}
         toggleSignIn={this.toggleSignIn}
         signInWithProvider={signInWithProvider}
         signIn={signIn}
         signInError={signInError}
         modalSignIn={this.state.modalSignIn}
         loading={loading}
+      />
+    );
+  }
+
+  renderPassResetModal() {
+    const { sendPassReset, passResetError, loadingPassReset } = this.props;
+
+    return (
+      <PassResetModal
+        key="mpr"
+        togglePassReset={this.togglePass}
+        passReset={sendPassReset}
+        passResetError={passResetError}
+        loadingPassReset={loadingPassReset}
+        modalPassReset={this.state.modalPassReset}
       />
     );
   }
@@ -115,6 +148,7 @@ class SignIn extends React.Component {
       this.renderAuthItems(),
       this.renderSignUpModal(),
       this.renderSignInModal(),
+      this.renderPassResetModal(),
     ];
   }
 }
@@ -124,10 +158,13 @@ SignIn.propTypes = {
   signIn: PropTypes.func,
   signInWithProvider: PropTypes.func,
   signUp: PropTypes.func,
+  sendPassReset: PropTypes.func,
   signUpError: PropTypes.object,
   signInError: PropTypes.object,
+  passResetError: PropTypes.object,
   syncing: PropTypes.bool,
   loading: PropTypes.bool,
+  loadingPassReset: PropTypes.bool,
 };
 
 export default SignIn;

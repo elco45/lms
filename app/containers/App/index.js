@@ -13,14 +13,17 @@ import {
   loginWithProvider,
   logout,
   signUp,
+  passReset,
 } from './actions';
 import {
   makeSelectCurrentUser,
   makeSelectLoggedIn,
   makeSelectSignUpError,
   makeSelectSignInError,
+  makeSelectPassResetError,
   makeSelectSync,
-  makeSelectLoading } from './selectors';
+  makeSelectLoading,
+  makeSelectLoadingPassReset } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
@@ -33,8 +36,8 @@ import NotFoundPage from '../NotFoundPage/Loadable';
 export class App extends React.PureComponent {
   render() {
     const {
-      user, loggedIn, signIn, signInWithProvider, signOut, createUser, breakpoints,
-      screenWidth, signUpError, signInError, syncing, loading,
+      user, loggedIn, signIn, signInWithProvider, signOut, createUser, sendPassReset, breakpoints,
+      screenWidth, signUpError, signInError, passResetError, syncing, loading, loadingPassReset,
     } = this.props;
     return (
       <div>
@@ -45,12 +48,15 @@ export class App extends React.PureComponent {
           signInWithProvider={signInWithProvider}
           signOut={signOut}
           signUp={createUser}
+          sendPassReset={sendPassReset}
           signUpError={signUpError}
           signInError={signInError}
+          passResetError={passResetError}
           breakpoints={breakpoints}
           screenWidth={screenWidth}
           syncing={syncing}
           loading={loading}
+          loadingPassReset={loadingPassReset}
         />
         {/* <div style={{ marginTop: location.pathname !== '/' ? 62 : null }}> */}
         <Switch>
@@ -68,15 +74,18 @@ App.propTypes = {
   user: PropTypes.object,
   signUpError: PropTypes.object,
   signInError: PropTypes.object,
+  passResetError: PropTypes.object,
   loggedIn: PropTypes.bool.isRequired,
   signIn: PropTypes.func.isRequired,
   signInWithProvider: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
+  sendPassReset: PropTypes.func.isRequired,
   createUser: PropTypes.func.isRequired,
   breakpoints: PropTypes.any.isRequired,
   screenWidth: PropTypes.number,
   syncing: PropTypes.bool,
   loading: PropTypes.bool,
+  loadingPassReset: PropTypes.bool,
 };
 
 const mapDispatchToProps = {
@@ -84,6 +93,7 @@ const mapDispatchToProps = {
   signInWithProvider: loginWithProvider,
   signOut: logout,
   createUser: signUp,
+  sendPassReset: passReset,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -91,8 +101,10 @@ const mapStateToProps = createStructuredSelector({
   loggedIn: makeSelectLoggedIn(),
   signUpError: makeSelectSignUpError(),
   signInError: makeSelectSignInError(),
+  passResetError: makeSelectPassResetError(),
   syncing: makeSelectSync(),
   loading: makeSelectLoading(),
+  loadingPassReset: makeSelectLoadingPassReset(),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
