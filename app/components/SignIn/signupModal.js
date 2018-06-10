@@ -153,6 +153,8 @@ class SignUpModal extends React.Component {
 
     this.submitSignUp = this.submitSignUp.bind(this);
     this.validateSignUp = this.validateSignUp.bind(this);
+    this.toggleLiveSignUp = this.toggleLiveSignUp.bind(this);
+    this.toggleLiveSignIn = this.toggleLiveSignIn.bind(this);
   }
 
   validateSignUp(formData, errors) {
@@ -189,6 +191,22 @@ class SignUpModal extends React.Component {
     this.props.signUp(data.formData);
   }
 
+  toggleLiveSignUp() {
+    this.setState({
+      live: false,
+      formData: {},
+    });
+    this.props.toggleSignUp();
+  }
+
+  toggleLiveSignIn() {
+    this.setState({
+      live: false,
+      formData: {},
+    });
+    this.props.toggle();
+  }
+
   renderLeftSideCardItems() {
     return (
       <ModalLeftContainer className="col-md-5 text-center">
@@ -215,17 +233,17 @@ class SignUpModal extends React.Component {
   }
 
   render() {
-    const { toggle, toggleSignUp, modalSignUp, loading } = this.props;
+    const { modalSignUp, loading } = this.props;
 
     return (
-      <Modal size="lg" isOpen={modalSignUp} toggle={toggleSignUp} className="roundedModal">
+      <Modal size="lg" isOpen={modalSignUp} toggle={this.toggleLiveSignUp} className="roundedModal">
         <div className="container">
           <div className="row">
             {this.renderLeftSideCardItems()}
             <ModalRightContainer className="col-md-7 col-sm-12 text-center">
               <div className="row">
                 <div className="col-12 text-right">
-                  <button style={{ cursor: 'pointer' }} onClick={toggleSignUp}>X</button>
+                  <button style={{ cursor: 'pointer' }} onClick={this.toggleLiveSignUp}>X</button>
                 </div>
                 <ModalRightTitle className="col-12">Academy</ModalRightTitle>
                 <ModalRightDescription className="col-12">
@@ -258,7 +276,7 @@ class SignUpModal extends React.Component {
                 <div className="col-12">
                   <div className="float-left">
                     <ModalTextIsMember> Ya eres Miembro? </ModalTextIsMember>
-                    <ModalTextOpenSI onClick={toggle}> Inicia Sesión </ModalTextOpenSI>
+                    <ModalTextOpenSI onClick={this.toggleLiveSignIn}> Inicia Sesión </ModalTextOpenSI>
                   </div>
                   <div className="float-right">
                     <ModalTextTerms> Al registrarse aceptas nuestros </ModalTextTerms>

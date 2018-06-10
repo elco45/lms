@@ -75,6 +75,9 @@ class SignInModal extends React.Component {
 
     this.submitSignIn = this.submitSignIn.bind(this);
     this.validateSignIn = this.validateSignIn.bind(this);
+    this.toggleLiveSignIn = this.toggleLiveSignIn.bind(this);
+    this.toggleLivePass = this.toggleLivePass.bind(this);
+    this.toggleLiveSignUp = this.toggleLiveSignUp.bind(this);
   }
 
   validateSignIn(formData, errors) {
@@ -108,17 +111,41 @@ class SignInModal extends React.Component {
     this.props.signIn(data.formData);
   }
 
+  toggleLiveSignIn() {
+    this.setState({
+      live: false,
+      formData: {},
+    });
+    this.props.toggleSignIn();
+  }
+
+  toggleLiveSignUp() {
+    this.setState({
+      live: false,
+      formData: {},
+    });
+    this.props.toggle();
+  }
+
+  toggleLivePass() {
+    this.setState({
+      live: false,
+      formData: {},
+    });
+    this.props.togglePassReset();
+  }
+
   render() {
-    const { togglePassReset, toggle, toggleSignIn, modalSignIn, loading } = this.props;
+    const { modalSignIn, loading } = this.props;
 
     return (
-      <Modal isOpen={modalSignIn} toggle={toggleSignIn} className="roundedModal">
+      <Modal isOpen={modalSignIn} toggle={this.toggleLiveSignIn} className="roundedModal">
         <div className="container">
           <div className="row">
             <ModalRightContainer className="col-12 text-center">
               <div className="row">
                 <div className="col-12 text-right">
-                  <button style={{ cursor: 'pointer' }} onClick={toggleSignIn}>X</button>
+                  <button style={{ cursor: 'pointer' }} onClick={this.toggleLiveSignIn}>X</button>
                 </div>
                 <ModalRightTitle className="col-12">Iniciar Sesión</ModalRightTitle>
                 <Form
@@ -146,11 +173,11 @@ class SignInModal extends React.Component {
                 </Form>
                 <div className="col-12">
                   <div className="float-left">
-                    <ModalTextOpenSI onClick={togglePassReset}> Se me olvidó la contraseña...</ModalTextOpenSI>
+                    <ModalTextOpenSI onClick={this.toggleLivePass}> Se me olvidó la contraseña...</ModalTextOpenSI>
                   </div>
                   <div className="float-right">
                     <ModalTextIsMember> No eres miembro? </ModalTextIsMember>
-                    <ModalTextOpenSI onClick={toggle}> Crear cuenta </ModalTextOpenSI>
+                    <ModalTextOpenSI onClick={this.toggleLiveSignUp}> Crear cuenta </ModalTextOpenSI>
                   </div>
                 </div>
               </div>

@@ -83,7 +83,7 @@ class SignInModal extends React.Component {
 
   toggleLive() {
     this.setState({
-      live: !this.state.live,
+      live: false,
       formData: {},
     });
     this.props.togglePassReset();
@@ -101,7 +101,7 @@ class SignInModal extends React.Component {
                 <div className="col-12 text-right">
                   <button style={{ cursor: 'pointer' }} onClick={this.toggleLive}>X</button>
                 </div>
-                <ModalRightTitle className="col-12">Contraseña Olvidado</ModalRightTitle>
+                <ModalRightTitle className="col-12">Restablecer Contraseña</ModalRightTitle>
                 <Form
                   className="col-12  mt-2 mb-1"
                   formData={this.state.formData}
